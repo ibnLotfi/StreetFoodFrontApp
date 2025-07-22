@@ -1,1 +1,18 @@
-<p>product-list works!</p>
+<div class="product-list-container">
+  <h1>Notre Menu</h1>
+  
+  <!-- Boucle sur les catégories -->
+  <div *ngFor="let category of categories" class="category-section">
+    <h2>{{ category.label }}</h2>
+    
+    <div class="products-grid">
+      <!-- Filtre les produits par catégorie -->
+      <div *ngFor="let product of products$ | async" class="product-wrapper">
+        <app-product-card 
+          *ngIf="product.category === category.value"
+          [product]="product">
+        </app-product-card>
+      </div>
+    </div>
+  </div>
+</div>

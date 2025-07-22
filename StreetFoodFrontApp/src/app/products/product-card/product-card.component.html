@@ -1,1 +1,30 @@
-<p>product-card works!</p>
+<div class="product-card">
+  <div class="product-image">
+    <!-- Image placeholder pour l'instant -->
+    <div class="image-placeholder">
+      {{ product.name }}
+    </div>
+  </div>
+  
+  <div class="product-info">
+    <h3>{{ product.name }}</h3>
+    <p class="price">{{ product.basePrice }}€</p>
+    
+    <div class="product-meta" *ngIf="product.size">
+      <span>{{ product.size }}</span>
+    </div>
+    
+    <div class="product-meta" *ngIf="product.isCustomizable">
+      <span>Personnalisable</span>
+    </div>
+  </div>
+  
+  <div class="product-actions">
+    <button 
+      class="add-to-cart-btn" 
+      (click)="onAddToCart()"
+      [disabled]="!product.isActive">
+      {{ product.isCustomizable ? 'Personnaliser' : 'Ajouter' }}
+    </button>
+  </div>
+</div>
