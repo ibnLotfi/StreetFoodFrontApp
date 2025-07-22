@@ -10,7 +10,7 @@ export interface Product {
     basePrice: number;
     image?: string;
     isActive: boolean;
-    IsCustomizable: boolean;
+    isCustomizable: boolean;
     availableSizes?: ProductSize[];
     // for simpliest product like drinks :
     size?: string;
