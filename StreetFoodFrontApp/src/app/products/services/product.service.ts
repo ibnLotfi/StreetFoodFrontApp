@@ -10,34 +10,72 @@ export class ProductService {
   constructor() {}
 
   private mockProducts: Product[] = [
-    {
-      id: '1',
-      name: 'Tacos sur mesure',
-      category: 'tacos',
-      basePrice: 6,
-      isActive: true,
-      isCustomizable: true,
-      availableSizes: ['M', 'L', 'XL'],
-    },
-    {
-      id: '2',
-      name: 'Pizza sur mesure',
-      category: 'pizza',
-      basePrice: 8,
-      isActive: true,
-      isCustomizable: true,
-      availableSizes: ['M', 'L', 'XL'],
-    },
-    {
-      id: '3',
-      name: 'Coca-Cola',
-      category: 'drink',
-      basePrice: 2.5,
-      isActive: true,
-      isCustomizable: false,
-      size: '33cl',
-    },
-  ];
+  // Tacos
+  {
+    id: '1',
+    name: 'Tacos sur mesure',
+    category: 'tacos',
+    basePrice: 6,
+    isActive: true,
+    isCustomizable: true,
+    availableSizes: ['M', 'L', 'XL']
+  },
+  {
+    id: '2',
+    name: 'Tacos Poulet',
+    category: 'tacos',
+    basePrice: 7,
+    isActive: true,
+    isCustomizable: false
+  },
+  {
+    id: '3',
+    name: 'Tacos Kebab',
+    category: 'tacos',
+    basePrice: 7.5,
+    isActive: true,
+    isCustomizable: false
+  },
+  
+  // Pizzas
+  {
+    id: '4',
+    name: 'Pizza sur mesure',
+    category: 'pizza',
+    basePrice: 8,
+    isActive: true,
+    isCustomizable: true,
+    availableSizes: ['M', 'L', 'XL']
+  },
+  {
+    id: '5',
+    name: 'Pizza Margherita',
+    category: 'pizza',
+    basePrice: 9,
+    isActive: true,
+    isCustomizable: false
+  },
+  
+  // Boissons
+  {
+    id: '6',
+    name: 'Coca-Cola',
+    category: 'drink',
+    basePrice: 2.5,
+    isActive: true,
+    isCustomizable: false,
+    size: '33cl'
+  },
+  {
+    id: '7',
+    name: 'Eau',
+    category: 'drink',
+    basePrice: 1.5,
+    isActive: true,
+    isCustomizable: false,
+    size: '50cl'
+  }
+];
 
   private mockOptions: ProductOption[] = [
     // Meats
