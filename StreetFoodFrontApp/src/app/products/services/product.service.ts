@@ -14,6 +14,7 @@ export class ProductService {
   {
     id: '1',
     name: 'Tacos sur mesure',
+    image: 'https://images.unsplash.com/photo-1585238342107-49a3cdace47f?q=80&w=767&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     category: 'tacos',
     basePrice: 6,
     isActive: true,
@@ -23,6 +24,7 @@ export class ProductService {
   {
     id: '2',
     name: 'Tacos Poulet',
+    image: 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     category: 'tacos',
     basePrice: 7,
     isActive: true,
@@ -32,6 +34,7 @@ export class ProductService {
     id: '3',
     name: 'Tacos Kebab',
     category: 'tacos',
+    image: 'https://images.unsplash.com/photo-1699728088614-7d1d4277414b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     basePrice: 7.5,
     isActive: true,
     isCustomizable: false
@@ -42,6 +45,7 @@ export class ProductService {
     id: '4',
     name: 'Pizza sur mesure',
     category: 'pizza',
+    image: 'https://plus.unsplash.com/premium_photo-1677607235809-7c5f0b240117?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     basePrice: 8,
     isActive: true,
     isCustomizable: true,
@@ -51,6 +55,7 @@ export class ProductService {
     id: '5',
     name: 'Pizza Margherita',
     category: 'pizza',
+    image: 'https://images.unsplash.com/photo-1551105018-7c047ef2c508?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     basePrice: 9,
     isActive: true,
     isCustomizable: false
@@ -60,6 +65,7 @@ export class ProductService {
   {
     id: '6',
     name: 'Coca-Cola',
+    image: 'https://images.unsplash.com/photo-1667204651371-5d4a65b8b5a9?q=80&w=716&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     category: 'drink',
     basePrice: 2.5,
     isActive: true,
@@ -70,6 +76,7 @@ export class ProductService {
     id: '7',
     name: 'Eau',
     category: 'drink',
+    image: 'https://images.unsplash.com/photo-1616118132534-381148898bb4?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     basePrice: 1.5,
     isActive: true,
     isCustomizable: false,

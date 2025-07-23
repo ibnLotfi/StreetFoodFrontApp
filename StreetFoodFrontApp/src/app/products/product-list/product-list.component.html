@@ -6,13 +6,13 @@
     <h2>{{ category.label }}</h2>
     
     <div class="products-grid">
-      <!-- Filtre les produits par catégorie -->
-      <div *ngFor="let product of products$ | async" class="product-wrapper">
+      <!-- Utilisation de ng-container pour éviter le wrapper -->
+      <ng-container *ngFor="let product of products$ | async">
         <app-product-card 
           *ngIf="product.category === category.value"
           [product]="product">
         </app-product-card>
-      </div>
+      </ng-container>
     </div>
   </div>
 </div>
