@@ -17,4 +17,6 @@ export interface Product {
     availableSupplements?: string[]; // Ids of available supplements
     availableMeats?: string[]; // Ids of available Meats
     availableSauces?: string[]; // Ids of available Sauces
+    availableBases?: string[]; 
+    menuPrice?: number;
 }

@@ -1,1 +1,136 @@
-<p>product-customization works!</p>
+<app-modal [isOpen]="isOpen" [title]="'Personnaliser ' + product?.name" (closeModal)="close()">
+
+  <div class="customization-form">
+    <!-- Taille -->
+    <div class="form-section">
+      <h3>Taille</h3>
+      <div class="size-options">
+        <label *ngFor="let size of product?.availableSizes" class="size-option">
+          <input type="radio" name="size" [value]="size" [(ngModel)]="selectedSize">
+          <span class="size-label">{{ size }}</span>
+          <span class="size-price">{{ getBasePriceForSize(size) }}€</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Base (pour pizza) -->
+    <div class="form-section" *ngIf="product?.category === 'pizza'">
+      <h3>Base</h3>
+      <div class="base-options">
+        <label *ngFor="let base of bases" class="radio-option">
+          <input type="radio" name="base" [value]="base.id" [(ngModel)]="selectedBase">
+          <span>{{ base.name }}</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Section nombre de viandes -->
+<div class="form-section">
+  <h3>Nombre de viandes</h3>
+  <div class="meat-count-options">
+    <label class="radio-option">
+      <input type="radio" name="meatCount" [value]="1" [(ngModel)]="numberOfMeats">
+      <span>1 viande</span>
+    </label>
+    <label class="radio-option">
+      <input type="radio" name="meatCount" [value]="2" [(ngModel)]="numberOfMeats">
+      <span>2 viandes (+2€)</span>
+    </label>
+    <label class="radio-option">
+      <input type="radio" name="meatCount" [value]="3" [(ngModel)]="numberOfMeats">
+      <span>3 viandes (+3.5€)</span>
+    </label>
+  </div>
+</div>
+
+    <!-- Sélection des viandes -->
+    <div class="form-section" *ngIf="numberOfMeats > 0">
+      <h3>Viandes ({{ selectedMeats.length }}/{{ numberOfMeats }})</h3>
+      <div class="checkbox-group">
+        <label *ngFor="let meat of meats" class="checkbox-option">
+          <input type="checkbox" [value]="meat.id" [checked]="selectedMeats.includes(meat.id)"
+            [disabled]="!selectedMeats.includes(meat.id) && selectedMeats.length >= numberOfMeats"
+            (change)="toggleMeat(meat.id)">
+          <span>{{ meat.name }}</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Sauces -->
+    <div class="form-section" *ngIf="product?.category !== 'pizza'">
+      <h3>Sauces ({{ selectedSauces.length }}/2)</h3>
+      <div class="checkbox-group">
+        <label *ngFor="let sauce of sauces" class="checkbox-option">
+          <input type="checkbox" [value]="sauce.id" [checked]="selectedSauces.includes(sauce.id)"
+            [disabled]="!selectedSauces.includes(sauce.id) && selectedSauces.length >= 2"
+            (change)="toggleSauce(sauce.id)">
+          <span>{{ sauce.name }}</span>
+        </label>
+      </div>
+    </div>
+
+
+    <!-- Suppléments -->
+    <div class="form-section">
+      <h3>Suppléments</h3>
+      <div class="checkbox-group">
+        <label *ngFor="let supp of supplements" class="checkbox-option">
+          <input type="checkbox" [value]="supp.id" [checked]="selectedSupplements.includes(supp.id)"
+            (change)="toggleSupplement(supp.id)">
+          <span>{{ supp.name }}</span>
+          <span class="price">+{{ supp.price }}€</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Menu -->
+    <div class="form-section">
+      <label class="menu-option">
+        <input type="checkbox" [(ngModel)]="isMenu">
+        <span>En menu (+2€)</span>
+      </label>
+
+      <!-- Options menu si sélectionné -->
+      <div class="menu-details" *ngIf="isMenu">
+        <div class="form-subsection">
+          <h4>Frites</h4>
+          <label *ngFor="let size of ['normal', 'medium', 'large']" class="radio-option">
+            <input type="radio" name="fries" [value]="size" [(ngModel)]="selectedFriesSize">
+            <span>{{ getFriesLabel(size) }}</span>
+          </label>
+        </div>
+        <!-- Dans la section boissons du menu -->
+        <div class="form-subsection">
+          <h4>Boisson</h4>
+          <div class="drinks-grid">
+            <label *ngFor="let drink of drinks" class="radio-option">
+              <input type="radio" name="drink" [value]="drink.id" [(ngModel)]="selectedDrink">
+              <span>{{ getDrinkLabel(drink) }}</span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Quantité -->
+    <div class="form-section">
+      <h3>Quantité</h3>
+      <div class="quantity-selector">
+        <button (click)="quantity = quantity > 1 ? quantity - 1 : 1">-</button>
+        <span>{{ quantity }}</span>
+        <button (click)="quantity = quantity + 1">+</button>
+      </div>
+    </div>
+
+    <!-- Prix total et bouton -->
+    <div class="footer-actions">
+      <div class="total-price">
+        Total : {{ calculateTotalPrice() }}€
+      </div>
+      <button class="add-to-cart-btn" (click)="addToCart()" [disabled]="!isFormValid()">
+        Ajouter au panier
+      </button>
+    </div>
+  </div>
+</app-modal>

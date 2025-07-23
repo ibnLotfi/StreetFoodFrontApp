@@ -3,22 +3,24 @@ import { Product } from '../models/product.model';
 import { CartService } from '../../cart/services/cart.service';
 import { CartItem } from '../../cart/models/cart-item.model';
 import { CommonModule } from '@angular/common';
+import { ProductCustomizationComponent } from '../product-customization/product-customization.component';
+
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProductCustomizationComponent],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent {
   @Input() product!: Product;
+  isCustomizationModalOpen = false;
 
   constructor(private cartService: CartService) {}
 
     onAddToCart(): void {
     if (this.product.isCustomizable) {
-      // TODO: Ouvrir la modale de personnalisation
-      console.log('Ouvrir modale pour:', this.product.name);
+      this.isCustomizationModalOpen = true;
     } else {
       // Produit simple, ajouter directement
       this.addSimpleProduct();
@@ -37,5 +39,9 @@ export class ProductCardComponent {
     
     this.cartService.addToCart(cartItem);
     console.log('Produit ajouté au panier');
+  }
+
+    closeCustomizationModal(): void {
+    this.isCustomizationModalOpen = false;
   }
 }

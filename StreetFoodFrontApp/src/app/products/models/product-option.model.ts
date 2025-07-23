@@ -1,6 +1,6 @@
 import { ProductSize } from "./product.model";
 
-export type OptionType = 'meats' | 'sauces' | 'supplements' | 'size';
+export type OptionType = 'meats' | 'sauces' | 'supplements' | 'size' | 'bases';
 
 export interface ProductOption {
     id: string;
@@ -19,4 +19,5 @@ export interface ProductCustomization {
     selectedSauces?: string[]; // maximum 2 for tacos (free)
     selectedSupplements?: string[]; // Including extra sauces
     size: ProductSize;
+    selectedBase: string;
 }
