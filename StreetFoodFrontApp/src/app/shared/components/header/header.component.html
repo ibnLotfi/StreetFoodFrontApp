@@ -14,3 +14,9 @@
     </button>
   </div>
 </header>
+
+<!-- Cart Sidebar -->
+<app-cart-sidebar 
+  [isOpen]="isCartOpen"
+  (closeSidebar)="closeCart()">
+</app-cart-sidebar>

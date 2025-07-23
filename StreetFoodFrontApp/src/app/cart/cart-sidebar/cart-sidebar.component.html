@@ -1,1 +1,101 @@
-<p>cart-sidebar works!</p>
+<!-- Backdrop -->
+<div class="cart-backdrop" *ngIf="isOpen" (click)="close()">
+</div>
+
+<!-- Sidebar -->
+<div class="cart-sidebar" [class.open]="isOpen">
+    <!-- Header -->
+    <div class="cart-header">
+        <h2>Mon Panier</h2>
+        <button class="close-btn" (click)="close()">✕</button>
+    </div>
+
+    <!-- Contenu -->
+    <div class="cart-content">
+        <!-- Si panier vide -->
+        <div *ngIf="(cartItems$ | async)?.length === 0" class="empty-cart">
+            <p>Votre panier est vide</p>
+            <button class="continue-shopping" (click)="close()">
+                Continuer mes achats
+            </button>
+        </div>
+
+        <!-- Liste des items -->
+        <div *ngIf="(cartItems$ | async)?.length as itemCount" class="cart-items">
+            <div *ngFor="let item of cartItems$ | async" class="cart-item">
+                <!-- Info produit -->
+                <div class="item-info">
+                    <h4>{{ getItemDescription(item) }}</h4>
+
+                    <!-- Détails personnalisation -->
+                    <div class="item-details" *ngIf="item.customization">
+                        <small *ngIf="item.customization.selectedMeats && item.customization.selectedMeats.length > 0">
+                            Viandes: {{ item.customization.selectedMeats.join(', ') }}
+                        </small>
+                        <small
+                            *ngIf="item.customization.selectedSauces && item.customization.selectedSauces.length > 0">
+                            Sauces: {{ item.customization.selectedSauces.join(', ') }}
+                        </small>
+                        <small
+                            *ngIf="item.customization.selectedSupplements && item.customization.selectedSupplements.length > 0">
+                            Suppléments: {{ item.customization.selectedSupplements.join(', ') }}
+                        </small>
+                    </div>
+
+                    <!-- Détails menu -->
+                    <div class="item-details" *ngIf="item.menuOptions">
+                        <small *ngIf="item.menuOptions.fries">
+                            Frites: {{ item.menuOptions.fries.size }}
+                        </small>
+                        <small *ngIf="item.menuOptions.drink">
+                            Boisson: {{ item.menuOptions.drink.name }}
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Prix et quantité -->
+                <div class="item-actions">
+                    <div class="item-price">{{ item.unitPrice }}€</div>
+
+                    <div class="quantity-controls">
+                        <button (click)="updateQuantity(item.id, item.quantity - 1)">-</button>
+                        <span>{{ item.quantity }}</span>
+                        <button (click)="updateQuantity(item.id, item.quantity + 1)">+</button>
+                    </div>
+
+                    <div class="item-total">{{ item.totalPrice }}€</div>
+
+                    <button class="remove-btn" (click)="removeItem(item.id)">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer avec totaux -->
+    <div class="cart-footer" *ngIf="(cartItems$ | async)?.length">
+        <div class="totals">
+            <div class="subtotal">
+                <span>Sous-total</span>
+                <span>{{ cartTotal$ | async }}€</span>
+            </div>
+            <div class="delivery">
+                <span>Livraison</span>
+                <span>{{ deliveryFee }}€</span>
+            </div>
+            <div class="total">
+                <span>Total</span>
+                <span>{{ ((cartTotal$ | async) || 0) + deliveryFee }}€</span>
+            </div>
+        </div>
+
+        <button class="checkout-btn" (click)="checkout()">
+            Commander • {{ ((cartTotal$ | async) || 0) + deliveryFee }}€
+        </button>
+
+        <button class="clear-cart-btn" (click)="clearCart()">
+            Vider le panier
+        </button>
+    </div>
+</div>
