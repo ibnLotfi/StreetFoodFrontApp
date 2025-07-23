@@ -1,9 +1,16 @@
 <div class="product-card">
   <div class="product-image">
-    <!-- Image placeholder pour l'instant -->
-    <div class="image-placeholder">
-      {{ product.name }}
-    </div>
+    <img 
+      *ngIf="product.image; else imagePlaceholder" 
+      [src]="product.image" 
+      [alt]="product.name"
+      class="product-img">
+    
+    <ng-template #imagePlaceholder>
+      <div class="image-placeholder">
+        {{ product.name }}
+      </div>
+    </ng-template>
   </div>
   
   <div class="product-info">
