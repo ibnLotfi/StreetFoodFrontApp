@@ -1,0 +1,16 @@
+<header class="header">
+  <div class="header-container">
+    <!-- Logo / Nom du restaurant -->
+    <div class="logo">
+      <h1>Street Food Lyon</h1>
+    </div>
+
+    <!-- Bouton panier -->
+    <button class="cart-button" (click)="openCart()">
+      <span class="cart-icon">🛒</span>
+      <span class="cart-count" *ngIf="(cartCount$ | async) as count">
+        {{ count }}
+      </span>
+    </button>
+  </div>
+</header>
