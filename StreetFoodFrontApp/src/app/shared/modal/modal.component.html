@@ -1,1 +1,21 @@
-<p>modal works!</p>
+<!-- Backdrop (fond sombre) -->
+<div class="modal-backdrop" 
+     *ngIf="isOpen" 
+     (click)="close()">
+  
+  <!-- Container de la modale -->
+  <div class="modal-container" 
+       (click)="onContentClick($event)">
+    
+    <!-- Header avec titre et bouton fermer -->
+    <div class="modal-header">
+      <h2>{{ title }}</h2>
+      <button class="close-button" (click)="close()">✕</button>
+    </div>
+    
+    <!-- Contenu projeté -->
+    <div class="modal-content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>
