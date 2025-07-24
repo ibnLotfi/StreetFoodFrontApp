@@ -17,25 +17,29 @@
   top: 0;
   right: -400px;
   width: 400px;
-  height: 100%;
+  height: 100vh;
   background-color: white;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
   z-index: 1300;
   display: flex;
   flex-direction: column;
   transition: right 0.3s ease-out;
+  overflow: hidden;
   
   &.open {
     right: 0;
   }
   
-  // Header
+ // Header - reste fixe
   .cart-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
     border-bottom: 1px solid #e0e0e0;
+    background-color: white;
+    flex-shrink: 0;
+    z-index: 10;
     
     h2 {
       margin: 0;
@@ -63,11 +67,36 @@
       }
     }
   }
+  // Zone scrollable
+  .cart-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    // Calcul de la hauteur disponible
+    //height: calc(100vh - 80px - 240px); 
+    padding-bottom: 250px;
+    // Style de la scrollbar
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 3px;
+      
+      &:hover {
+        background: #555;
+      }
+    }
+  }
   
   // Content
   .cart-content {
-    flex: 1;
-    overflow-y: auto;
     padding: 20px;
     
     .empty-cart {
@@ -189,12 +218,238 @@
       }
     }
   }
+
+  // Formulaire client
+  .customer-form {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-top: 2px solid #e0e0e0;
+    margin-bottom: 20px; // Espace avant le footer fixe
+    
+    h3 {
+      margin: 0 0 20px 0;
+      color: #2c3e50;
+      font-size: 20px;
+    }
+    
+    // Type de livraison
+    .delivery-type {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 24px;
+      
+      label {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        
+        input[type="radio"] {
+          margin-right: 8px;
+        }
+        
+        &:hover {
+          border-color: #3498db;
+        }
+        
+        &:has(input:checked) {
+          border-color: #e74c3c;
+          background-color: #fff5f5;
+        }
+      }
+    }
+    
+    // Groupe de formulaire
+    .form-group {
+      margin-bottom: 16px;
+      
+      label {
+        display: block;
+        margin-bottom: 6px;
+        color: #34495e;
+        font-weight: 500;
+        font-size: 14px;
+      }
+      
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: all 0.2s;
+        
+        &:focus {
+          outline: none;
+          border-color: #3498db;
+          box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        &:disabled {
+          background-color: #f0f0f0;
+          cursor: not-allowed;
+        }
+        
+        &::placeholder {
+          color: #bdc3c7;
+        }
+      }
+    }
+    
+    // Groupe téléphone spécial
+    .phone-group {
+      .phone-input-wrapper {
+        position: relative;
+        
+        input[type="tel"] {
+          padding-right: 100px;
+        }
+        
+        .validation-status {
+          position: absolute;
+          right: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          
+          .verified {
+            color: #27ae60;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            
+            .change-number-btn {
+              font-size: 12px;
+              padding: 4px 8px;
+              background: white;
+              border: 1px solid #27ae60;
+              color: #27ae60;
+              border-radius: 3px;
+              cursor: pointer;
+              transition: all 0.2s;
+              
+              &:hover {
+                background-color: #27ae60;
+                color: white;
+              }
+            }
+          }
+          
+          .verify-btn {
+            padding: 6px 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            
+            &:hover:not(:disabled) {
+              background-color: #2980b9;
+            }
+            
+            &:disabled {
+              background-color: #bdc3c7;
+              cursor: not-allowed;
+            }
+          }
+        }
+      }
+      
+      .sms-validation {
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px;
+        background-color: #e8f4f8;
+        border-radius: 4px;
+        border: 1px solid #3498db;
+        
+        input {
+          flex: 1;
+          padding: 8px 12px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 16px;
+          text-align: center;
+          letter-spacing: 4px;
+          
+          &:focus {
+            outline: none;
+            border-color: #3498db;
+          }
+        }
+        
+        button {
+          padding: 8px 16px;
+          background-color: #27ae60;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          
+          &:hover:not(:disabled) {
+            background-color: #229954;
+          }
+          
+          &:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+          }
+        }
+        
+        .resend-btn {
+          background: none;
+          color: #3498db;
+          text-decoration: underline;
+          padding: 4px 8px;
+          font-size: 14px;
+          
+          &:hover {
+            color: #2980b9;
+          }
+        }
+      }
+    }
+    
+    // Champs adresse
+    .address-fields {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+      
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 12px;
+      }
+    }
+  }
   
-  // Footer
+  // Footer - reste fixe en bas
   .cart-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    flex-shrink: 0;
     border-top: 2px solid #e0e0e0;
     padding: 20px;
     background-color: #f8f9fa;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
     
     .totals {
       margin-bottom: 20px;
@@ -228,10 +483,20 @@
       transition: all 0.2s;
       margin-bottom: 12px;
       
-      &:hover {
+      &:hover:not(:disabled) {
         background-color: #c0392b;
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      
+      &:disabled {
+        background-color: #95a5a6;
+        cursor: not-allowed;
+        
+        &:hover {
+          transform: none;
+          box-shadow: none;
+        }
       }
     }
     
@@ -254,10 +519,21 @@
   }
 }
 
-// Animation
+// Animations
 @keyframes fadeIn {
   to {
     opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -266,5 +542,18 @@
   .cart-sidebar {
     width: 100%;
     right: -100%;
+    
+    .customer-form {
+      .delivery-type {
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .address-fields {
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
   }
 }
