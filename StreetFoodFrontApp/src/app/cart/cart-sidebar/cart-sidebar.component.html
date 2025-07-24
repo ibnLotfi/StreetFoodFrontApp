@@ -9,69 +9,163 @@
         <h2>Mon Panier</h2>
         <button class="close-btn" (click)="close()">✕</button>
     </div>
+    <div class="cart-scrollable">
+        <!-- Contenu -->
+        <div class="cart-content">
+            <!-- Si panier vide -->
+            <div *ngIf="(cartItems$ | async)?.length === 0" class="empty-cart">
+                <p>Votre panier est vide</p>
+                <button class="continue-shopping" (click)="close()">
+                    Continuer mes achats
+                </button>
+            </div>
 
-    <!-- Contenu -->
-    <div class="cart-content">
-        <!-- Si panier vide -->
-        <div *ngIf="(cartItems$ | async)?.length === 0" class="empty-cart">
-            <p>Votre panier est vide</p>
-            <button class="continue-shopping" (click)="close()">
-                Continuer mes achats
-            </button>
-        </div>
+            <!-- Liste des items -->
+            <div *ngIf="(cartItems$ | async)?.length as itemCount" class="cart-items">
+                <div *ngFor="let item of cartItems$ | async" class="cart-item">
+                    <!-- Info produit -->
+                    <div class="item-info">
+                        <h4>{{ getItemDescription(item) }}</h4>
 
-        <!-- Liste des items -->
-        <div *ngIf="(cartItems$ | async)?.length as itemCount" class="cart-items">
-            <div *ngFor="let item of cartItems$ | async" class="cart-item">
-                <!-- Info produit -->
-                <div class="item-info">
-                    <h4>{{ getItemDescription(item) }}</h4>
+                        <!-- Détails personnalisation -->
+                        <div class="item-details" *ngIf="item.customization">
+                            <small
+                                *ngIf="item.customization.selectedMeats && item.customization.selectedMeats.length > 0">
+                                Viandes: {{ item.customization.selectedMeats.join(', ') }}
+                            </small>
+                            <small
+                                *ngIf="item.customization.selectedSauces && item.customization.selectedSauces.length > 0">
+                                Sauces: {{ item.customization.selectedSauces.join(', ') }}
+                            </small>
+                            <small
+                                *ngIf="item.customization.selectedSupplements && item.customization.selectedSupplements.length > 0">
+                                Suppléments: {{ item.customization.selectedSupplements.join(', ') }}
+                            </small>
+                        </div>
 
-                    <!-- Détails personnalisation -->
-                    <div class="item-details" *ngIf="item.customization">
-                        <small *ngIf="item.customization.selectedMeats && item.customization.selectedMeats.length > 0">
-                            Viandes: {{ item.customization.selectedMeats.join(', ') }}
-                        </small>
-                        <small
-                            *ngIf="item.customization.selectedSauces && item.customization.selectedSauces.length > 0">
-                            Sauces: {{ item.customization.selectedSauces.join(', ') }}
-                        </small>
-                        <small
-                            *ngIf="item.customization.selectedSupplements && item.customization.selectedSupplements.length > 0">
-                            Suppléments: {{ item.customization.selectedSupplements.join(', ') }}
-                        </small>
+                        <!-- Détails menu -->
+                        <div class="item-details" *ngIf="item.menuOptions">
+                            <small *ngIf="item.menuOptions.fries">
+                                Frites: {{ item.menuOptions.fries.size }}
+                            </small>
+                            <small *ngIf="item.menuOptions.drink">
+                                Boisson: {{ item.menuOptions.drink.name }}
+                            </small>
+                        </div>
                     </div>
 
-                    <!-- Détails menu -->
-                    <div class="item-details" *ngIf="item.menuOptions">
-                        <small *ngIf="item.menuOptions.fries">
-                            Frites: {{ item.menuOptions.fries.size }}
-                        </small>
-                        <small *ngIf="item.menuOptions.drink">
-                            Boisson: {{ item.menuOptions.drink.name }}
-                        </small>
+                    <!-- Prix et quantité -->
+                    <div class="item-actions">
+                        <div class="item-price">{{ item.unitPrice }}€</div>
+
+                        <div class="quantity-controls">
+                            <button (click)="updateQuantity(item.id, item.quantity - 1)">-</button>
+                            <span>{{ item.quantity }}</span>
+                            <button (click)="updateQuantity(item.id, item.quantity + 1)">+</button>
+                        </div>
+
+                        <div class="item-total">{{ item.totalPrice }}€</div>
+
+                        <button class="remove-btn" (click)="removeItem(item.id)">
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="customer-form" *ngIf="(cartItems$ | async)?.length">
+            <!-- Formulaire pour informations client -->
+            <div class="customer-form" *ngIf="(cartItems$ | async)?.length">
+                <h3>Informations de livraison</h3>
+
+                <!-- Type de livraison -->
+                <div class="form-group delivery-type">
+                    <label>
+                        <input type="radio" name="deliveryType" value="delivery"
+                            [(ngModel)]="customerInfo.deliveryType">
+                        <span>Livraison ({{ deliveryFee }}€)</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="deliveryType" value="pickup" [(ngModel)]="customerInfo.deliveryType">
+                        <span>Click & Collect (Gratuit)</span>
+                    </label>
+                </div>
+
+                <!-- Nom complet -->
+                <div class="form-group">
+                    <label for="fullName">Nom complet</label>
+                    <input type="text" id="fullName" [(ngModel)]="customerInfo.fullName" placeholder="Jean Dupont"
+                        required>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" [(ngModel)]="customerInfo.email" placeholder="jean.dupont@email.com"
+                        required>
+                </div>
+
+                <!-- Téléphone avec validation -->
+                <div class="form-group phone-group">
+                    <label for="phone">Téléphone</label>
+                    <div class="phone-input-wrapper">
+                        <input type="tel" id="phone" [(ngModel)]="customerInfo.phone" placeholder="06 12 34 56 78"
+                            (ngModelChange)="onPhoneChange()" required>
+
+                        <!-- Statut de validation -->
+                        <div class="validation-status" *ngIf="customerInfo.phone.length >= 10">
+                            <span *ngIf="phoneValidated" class="verified">
+                                ✓ Vérifié
+                                <button class="change-number-btn" (click)="changePhoneNumber()">
+                                    Changer
+                                </button>
+                            </span>
+                            <button *ngIf="!phoneValidated && !showSmsValidation" class="verify-btn"
+                                (click)="sendSmsCode()"
+                                [disabled]="!customerInfo.phone || customerInfo.phone.length < 10">
+                                Vérifier
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Validation SMS -->
+                    <div class="sms-validation" *ngIf="showSmsValidation && !phoneValidated">
+                        <input type="text" [(ngModel)]="smsCode" placeholder="Code SMS (4 chiffres)" maxlength="4">
+                        <button (click)="validateSmsCode()" [disabled]="smsCode.length !== 4">
+                            Valider
+                        </button>
+                        <button class="resend-btn" (click)="sendSmsCode()">
+                            Renvoyer le code
+                        </button>
                     </div>
                 </div>
 
-                <!-- Prix et quantité -->
-                <div class="item-actions">
-                    <div class="item-price">{{ item.unitPrice }}€</div>
-
-                    <div class="quantity-controls">
-                        <button (click)="updateQuantity(item.id, item.quantity - 1)">-</button>
-                        <span>{{ item.quantity }}</span>
-                        <button (click)="updateQuantity(item.id, item.quantity + 1)">+</button>
+                <!-- Adresse (si livraison) -->
+                <div class="address-fields" *ngIf="customerInfo.deliveryType === 'delivery'">
+                    <div class="form-group">
+                        <label for="address">Adresse</label>
+                        <input type="text" id="address" [(ngModel)]="customerInfo.address"
+                            placeholder="123 rue de la République" required>
                     </div>
 
-                    <div class="item-total">{{ item.totalPrice }}€</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="postalCode">Code postal</label>
+                            <input type="text" id="postalCode" [(ngModel)]="customerInfo.postalCode" placeholder="69000"
+                                maxlength="5" required>
+                        </div>
 
-                    <button class="remove-btn" (click)="removeItem(item.id)">
-                        🗑️
-                    </button>
+                        <div class="form-group">
+                            <label for="city">Ville</label>
+                            <input type="text" id="city" [(ngModel)]="customerInfo.city" placeholder="Lyon" required>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Footer avec totaux -->
     <div class="cart-footer" *ngIf="(cartItems$ | async)?.length">
@@ -90,9 +184,12 @@
             </div>
         </div>
 
-        <button class="checkout-btn" (click)="checkout()">
-            Commander • {{ ((cartTotal$ | async) || 0) + deliveryFee }}€
-        </button>
+        <button 
+  class="checkout-btn" 
+  (click)="checkout()"
+  [disabled]="!isFormValid() || !phoneValidated">
+  Commander • {{ ((cartTotal$ | async) || 0) + getDeliveryFee() }}€
+</button>
 
         <button class="clear-cart-btn" (click)="clearCart()">
             Vider le panier
