@@ -1,41 +1,50 @@
 <div class="product-card">
-  <div class="product-image">
-    <img 
-      *ngIf="product.image; else imagePlaceholder" 
-      [src]="product.image" 
-      [alt]="product.name"
-      class="product-img">
-    
-    <ng-template #imagePlaceholder>
-      <div class="image-placeholder">
-        {{ product.name }}
-      </div>
-    </ng-template>
-  </div>
-  
+  <!-- Moitié gauche - Infos -->
   <div class="product-info">
-    <h3>{{ product.name }}</h3>
-    <p class="price">{{ product.basePrice }}€</p>
-    
-    <div class="product-meta" *ngIf="product.size">
-      <span>{{ product.size }}</span>
+    <div class="product-header">
+      <h3>{{ product.name }}</h3>
+      <div class="price">{{ product.basePrice }} €</div>
     </div>
     
-    <div class="product-meta" *ngIf="product.isCustomizable">
-      <span>Personnalisable</span>
+    <div class="product-tags">
+      <span class="tag popular" *ngIf="product.id === '1' || product.id === '4'">
+        Populaire
+      </span>
+      <span class="tag size" *ngIf="product.size">
+        {{ product.size }}
+      </span>
+      <span class="tag customizable" *ngIf="product.isCustomizable">
+        Personnalisable
+      </span>
     </div>
   </div>
   
-  <div class="product-actions">
+  <!-- Moitié droite - Image -->
+  <div class="product-visual">
+    <div class="product-image">
+      <img 
+        *ngIf="product.image; else imagePlaceholder" 
+        [src]="product.image" 
+        [alt]="product.name">
+      
+      <ng-template #imagePlaceholder>
+        <div class="image-placeholder">
+          {{ product.name }}
+        </div>
+      </ng-template>
+    </div>
+    
     <button 
-      class="add-to-cart-btn" 
+      class="add-button" 
       (click)="onAddToCart()"
-      [disabled]="!product.isActive">
-      {{ product.isCustomizable ? 'Personnaliser' : 'Ajouter' }}
+      [disabled]="!product.isActive"
+      [title]="product.isCustomizable ? 'Personnaliser' : 'Ajouter au panier'">
+      +
     </button>
   </div>
 </div>
 
+<!-- Modale de personnalisation -->
 <app-product-customization
   [product]="product"
   [isOpen]="isCustomizationModalOpen"
